@@ -1,2 +1,2 @@
 # Calculator
-JavaScript final project TOP
+JavaScript foundations final project TOP
