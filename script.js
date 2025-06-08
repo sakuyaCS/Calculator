@@ -60,3 +60,28 @@ function operate (operator, num1, num2) {
     } else return 0;
 
 }
+
+let currentDisplay = '0'; // tracking variable
+
+function updateDisplay(val) { // take in a number or operator or command
+
+    const display = document.querySelector('#display');
+
+
+    if (val === clear) { // when clear btn pressed, set display to 0
+    currentDisplay = '0';
+    } else if (val === '0') { // replace the placeholder 0
+    currentDisplay = val;
+    } else {
+    currentDisplay += val; // handle adding to an existing number
+    }
+
+
+    display.textContent = currentDisplay
+
+
+}
+
+
+
+
