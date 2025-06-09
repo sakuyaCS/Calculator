@@ -65,19 +65,27 @@ button {
     height: 22%;
 }
 
-.clear{
-    background-color: #ff6600;
+.clear, 
+button[value="0"],
+button[value="."],
+button[value="/"],
+button[value="="]{
+    width: 19%;
+}
+
+.clear {
+    background-color: #ed8008;
 }
 
 .clear:active {
     box-shadow: 0 1px 1px rgba(0,0,0,0.1);
     transform: scale(0.97);
     transition: all 0.1s ease;
-    background-color: #CC5500;
+    background-color: #ed3f1c;
 }
 
 .clear:hover {
-    background-color: #CC5500;
+    background-color: #ed3f1c;
     transition: all 0.1s ease;
 }
 
@@ -90,4 +98,12 @@ button:active {
     transform: scale(0.97);
     transition: all 0.1s ease;
     background: #e6e6e6;
+}
+
+.decimal {
+    display: flex;
+    height: 22%;
+    align-items: center;
+    justify-content: center;
+    
 }
