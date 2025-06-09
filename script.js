@@ -68,9 +68,9 @@ function updateDisplay(val) { // take in a number or operator or command
     const display = document.querySelector('#display');
 
 
-    if (val === clear) { // when clear btn pressed, set display to 0
+    if (val === 'clear') { // when clear btn pressed, set display to 0
     currentDisplay = '0';
-    } else if (val === '0') { // replace the placeholder 0
+    } else if (val === '0' && val !== 0) { // replace the placeholder 0
     currentDisplay = val;
     } else {
     currentDisplay += val; // handle adding to an existing number
@@ -81,6 +81,18 @@ function updateDisplay(val) { // take in a number or operator or command
 
 
 }
+
+let clickedBtn = document.querySelectorAll('button');
+
+clickedBtn.forEach(button => { 
+    button.addEventListener('click', function(event) {
+
+        const buttonValue = event.target.value || event.target.textContent; // event delegation
+        updateDisplay(buttonValue); // display holds buttonValue
+    });
+});
+
+
 
 
 
