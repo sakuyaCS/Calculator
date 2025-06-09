@@ -39,6 +39,10 @@ function multiply (num1, num2) {
 
 function divide (num1, num2) {
 
+    if (num2 === 0) { 
+        return 'ERROR';
+    }
+
     let a = num1;
     let b = num2;
 
@@ -49,20 +53,62 @@ function divide (num1, num2) {
 
 function operate (operator, num1, num2) {
 
-    if (operator === '+') return addition(num1, num2);
-    if (operator === '-') return subtraction(num1, num2);
-    if (operator === '*') return multiply(num1, num2);
-    if (operator === '/') return divide(num1, num2);
+    const a = parseFloat(num1)
+    const b = parseFloat(num2);
+
+    if (operator === '+') return addition(a, b);
+    if (operator === '-') return subtraction(a, b);
+    if (operator === '*') return multiply(a, b);
+    if (operator === '/') return divide(a, b);
+
+    return 'ERROR';
 
 }
 
-const buttons = document.querySelectorAll('buttons');
+let currentDisplay = '0'
 
-buttons.forEach(buttons => buttons.addEventListener('click', handleButtonClick));
+function updateDisplay(value) {
+    const display = document.querySelector('#display');
+    display.textContent = value;
+    currentDisplay = value;
+}
 
 
 
+const buttonPress = document.querySelectorAll('button');
 
 
+buttonPress.forEach(button => {
+    button.addEventListener('click', function(event) {
+        const buttonValue = button.value;
 
-
+        if (!isNaN(buttonValue)) {
+            if (currentDisplay === '0') {
+                updateDisplay(buttonValue);
+            } else {
+                updateDisplay(currentDisplay + buttonValue);
+            }
+        }
+        else if(['+', '-', '*', '/'].includes(buttonValue)) {
+            operator = buttonValue;
+            a = parseFloat(currentDisplay);
+            updateDisplay('0');
+        }
+        else if(buttonValue === '=') {
+            b = parseFloat(currentDisplay);
+            const result = operate(operator, a, b);
+            updateDisplay(result.toString());
+        }
+        else if(buttonValue === 'clear') {
+            currentDisplay = '0';
+            operator = null;
+            a = null;
+            b = null;
+            updateDisplay('0');
+        } else if (buttonValue === '.') {
+            if (!currentDisplay.includes('.')) {
+                updateDisplay(currentDisplay + '.');
+            }
+        }
+    });
+});
