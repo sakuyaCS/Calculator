@@ -70,7 +70,7 @@ function updateDisplay(val) { // take in a number or operator or command
 
     if (val === 'clear') { // when clear btn pressed, set display to 0
     currentDisplay = '0';
-    } else if (val === '0' && val !== 0) { // replace the placeholder 0
+    } else if (currentDisplay === '0' && val !== 0) { // replace the placeholder 0
     currentDisplay = val;
     } else {
     currentDisplay += val; // handle adding to an existing number
