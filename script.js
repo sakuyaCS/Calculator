@@ -67,19 +67,35 @@ function updateDisplay(val) { // take in a number or operator or command
 
     const display = document.querySelector('#display');
 
+    if (val === 'clear') {
+        currentDisplay = '0';
+        a = null;
+        operator = null;
+        
+    } else if (['+', '-', '*', '/'].includes(val)) {
+        // Store first number and operator
+        a = parseFloat(currentDisplay); // save first number, convert string to number
+        operator = val; // save operator that was pressed
+        currentDisplay = '0'; // reset the display to enter second number
+        
+    } else if (val === '=') { //equal btn logic
 
-    if (val === 'clear') { // when clear btn pressed, set display to 0
-    currentDisplay = '0';
-    } else if (currentDisplay === '0' && val !== 0) { // replace the placeholder 0
-    currentDisplay = val;
+        if (a !== null && operator !== null) { // if both operator and num exist
+            b = parseFloat(currentDisplay); // convert second number from str to num
+            const result = operate(operator, a, b); // result is stored, operate func used on the three variables
+            currentDisplay = result.toString(); // display shows str version of result
+        }
+        
     } else {
-    currentDisplay += val; // handle adding to an existing number
+        
+        if (currentDisplay === '0') {
+            currentDisplay = val; // set display to 0 if value is 0
+        } else {
+            currentDisplay += val; // adds digit to existing number, no leading 0
+        }
     }
 
-
-    display.textContent = currentDisplay
-
-
+    display.textContent = currentDisplay; // update display with content
 }
 
 let clickedBtn = document.querySelectorAll('button');
@@ -91,7 +107,6 @@ clickedBtn.forEach(button => {
         updateDisplay(buttonValue); // display holds buttonValue
     });
 });
-
 
 
 
