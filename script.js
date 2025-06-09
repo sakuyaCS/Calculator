@@ -49,22 +49,17 @@ function divide (num1, num2) {
 
 function operate (operator, num1, num2) {
 
-
+    if (operator === '+') return addition(num1, num2);
+    if (operator === '-') return subtraction(num1, num2);
+    if (operator === '*') return multiply(num1, num2);
+    if (operator === '/') return divide(num1, num2);
 
 }
 
+const buttons = document.querySelectorAll('buttons');
 
-let currentDisplay = '0';
+buttons.forEach(buttons => buttons.addEventListener('click', handleButtonClick));
 
-function updateDisplay(val) 
-
-    const display = document.querySelector('#display');
-
-
-
-let clickedBtn = document.querySelectorAll('button');
-
-clickedBtn.forEach()
 
 
 
