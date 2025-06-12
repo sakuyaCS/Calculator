@@ -1,6 +1,7 @@
 let operator;
 let a;
 let b;
+let justCalculated = false;
 
 
 
@@ -53,6 +54,7 @@ function divide (num1, num2) {
 
 function operate (operator, num1, num2) {
 
+
     const a = parseFloat(num1)
     const b = parseFloat(num2);
 
@@ -61,7 +63,6 @@ function operate (operator, num1, num2) {
     if (operator === '*') return multiply(a, b);
     if (operator === '/') return divide(a, b);
 
-    return 'ERROR';
 
 }
 
@@ -69,6 +70,10 @@ let currentDisplay = '0'
 
 function updateDisplay(value) {
     const display = document.querySelector('#display');
+
+    if(typeof value === 'number' && value.toString().length > 30) {
+        value = parseFloat(value.toPrecision(8));
+    }
     display.textContent = value;
     currentDisplay = value;
 }
@@ -83,21 +88,42 @@ buttonPress.forEach(button => {
         const buttonValue = button.value;
 
         if (!isNaN(buttonValue)) {
-            if (currentDisplay === '0') {
+            if (currentDisplay === '0' || justCalculated) {
                 updateDisplay(buttonValue);
+                justCalculated = false;
             } else {
                 updateDisplay(currentDisplay + buttonValue);
             }
-        }
+        } // button operator handler
         else if(['+', '-', '*', '/'].includes(buttonValue)) {
+            if (operator && a !== null && !justCalculated) {
+                b = parseFloat(currentDisplay);
+                const result = operate(operator, a, b);
+                updateDisplay(result.toString());
+                a = result;
+
+
+
+
+
+
+            } else {
+                a = parseFloat(currentDisplay);
+            }
             operator = buttonValue;
-            a = parseFloat(currentDisplay);
+            justCalculated = false;
             updateDisplay('0');
         }
         else if(buttonValue === '=') {
-            b = parseFloat(currentDisplay);
-            const result = operate(operator, a, b);
-            updateDisplay(result.toString());
+            if (operator && a !== null) {
+                b = parseFloat(currentDisplay);
+                const result = operate(operator, a, b);
+                updateDisplay(result.toString());
+                justCalculated = true;
+                operator = null;
+                a = null;
+                b = null;
+            }
         }
         else if(buttonValue === 'clear') {
             currentDisplay = '0';
@@ -112,3 +138,62 @@ buttonPress.forEach(button => {
         }
     });
 });
+
+document.addEventListener('keydown', function(event) {
+    const key = event.key;
+
+    if (!isNaN(key)) {
+        if (currentDisplay === '0' || justCalculated) {
+            updateDisplay(key);
+            justCalculated = false;
+        }
+        else {
+            updateDisplay(currentDisplay + key);
+        }
+    } // keyboard operator handler
+    else if(['+', '-', '*', '/'].includes(key)) {
+     if (operator && a !==null && !justCalculated) {
+        b = parseFloat(currentDisplay);
+        const result = operate(operator, a, b);
+        updateDisplay(result.toString());
+        a = result;
+    } else {
+        a = parseFloat(currentDisplay);
+    }
+    operator = key;
+    justCalculated = false;
+    updateDisplay('0');
+    }
+    else if(key === '=' || key === 'Enter') {
+        if (operator && a !== null) {
+            b = parseFloat(currentDisplay);
+            const result = operate(operator, a, b);
+            updateDisplay(result.toString());
+            justCalculated = true;
+            operator = null;
+            a = null;
+            b = null;
+        }
+    }
+    else if(key === 'clear' || key === 'Escape') {
+        currentDisplay = '0';
+        operator = null;
+        a = null;
+        b = null;
+        updateDisplay('0');
+    }
+    else if (key === '.') {
+        if (!currentDisplay.includes('.')) {
+            updateDisplay(currentDisplay + '.');
+        }
+    }
+
+    else if (key === 'Backspace') {
+        if (currentDisplay.length > 1) {
+            updateDisplay(currentDisplay.slice(0, -1));
+        } else {
+            updateDisplay('0');
+        }
+    }
+    
+})
